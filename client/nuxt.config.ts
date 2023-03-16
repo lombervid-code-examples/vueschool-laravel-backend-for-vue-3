@@ -4,5 +4,20 @@ export default defineNuxtConfig({
         '@vueuse/nuxt',
         '@nuxtjs/tailwindcss',
         '@formkit/nuxt'
-    ]
+    ],
+    css: ["@/assets/css/main.css"],
+    tailwindcss: {
+        config: {
+            content: ["./node_modules/laravel-vue-pagination/**/*.vue"],
+        },
+    },
+    runtimeConfig: {
+        public: {
+            appURL: "http://laravel.test"
+        }
+    },
+    routeRules: {
+        "/profiles/*": { swr: true },
+        "/*": {ssr: false },
+    }
 })

@@ -1,5 +1,8 @@
 import { DefaultConfigOptions }  from '@formkit/vue'
+import '@formkit/themes/genesis'
 
-export default {
-    theme: "genesis",
-} as DefaultConfigOptions;
+const config: DefaultConfigOptions = {
+    // theme: "genesis"
+}
+
+export default config
