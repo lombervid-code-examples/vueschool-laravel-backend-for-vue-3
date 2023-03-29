@@ -2,6 +2,7 @@
 import axios from 'axios'
 
 definePageMeta({
+  middleware: ['guest'],
   layout: 'centered',
 })
 
