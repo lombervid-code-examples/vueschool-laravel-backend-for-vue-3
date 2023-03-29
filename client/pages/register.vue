@@ -20,13 +20,11 @@ const form = reactive({
 })
 
 async function register(payload: RegisterPayload) {
-  const config = useRuntimeConfig()
-  axios.defaults.baseURL = config.public.appURL
   try {
-    const response = axios.post('/register', payload)
-    console.log(response)
+    await axios.post('/register', payload)
+    useRouter().push('/me')
   } catch (error) {
-    console.error(console.error())
+    console.error(error)
   }
 }
 </script>
