@@ -14,7 +14,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     (error) => {
       if (
         [401, 419].includes(error.response.status) &&
-        !error.request.responseURL.endsWith('/api/user')
+        useRoute().meta?.requiresAuth
       ) {
         useAuth().logout()
       } else {

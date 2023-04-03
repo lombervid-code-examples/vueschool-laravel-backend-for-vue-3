@@ -86,11 +86,17 @@ export const useAuth = () => {
     }
   }
 
+  async function isAuthenticated(): Promise<boolean> {
+    await initUser()
+
+    return user.value !== null
+  }
+
   return {
     login,
     logout,
     register,
-    initUser,
+    isAuthenticated,
     user,
   }
 }
