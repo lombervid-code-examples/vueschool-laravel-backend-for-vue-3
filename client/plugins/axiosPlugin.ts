@@ -8,4 +8,18 @@ export default defineNuxtPlugin((nuxtApp) => {
   axios.defaults.headers.common['Content-Type'] = 'application/json'
   axios.defaults.headers.common['Accept'] = 'application/json'
   axios.defaults.withCredentials = true
+
+  axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (
+        [401, 419].includes(error.response.status) &&
+        !error.request.responseURL.endsWith('/api/user')
+      ) {
+        useAuth().logout()
+      } else {
+        return Promise.reject(error)
+      }
+    }
+  )
 })
