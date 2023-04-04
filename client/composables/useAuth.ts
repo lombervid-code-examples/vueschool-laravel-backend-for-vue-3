@@ -1,28 +1,5 @@
 import axios from 'axios'
-
-interface LoginPayload {
-  email: string
-  password: string
-}
-
-interface RegisterPayload {
-  name: string
-  email: string
-  password: string
-  password_confirmation: string
-}
-
-interface User {
-  id: number
-  name: string
-  email: string
-  created_at: Date
-  updated_at: Date
-  email_verified_at?: Date
-  two_factor_secret?: string
-  two_factor_recovery_codes?: number
-  two_factor_confirmed_at?: Date
-}
+import { User, LoginPayload, RegisterPayload } from '@/types'
 
 const user = ref<User | null>(null)
 
