@@ -15,17 +15,17 @@ export const useAuth = () => {
 
     try {
       const response = await axios.get('/user')
-      const user = response.data
+      const data = response.data
 
       return {
-        ...user,
-        created_at: new Date(user.created_at),
-        updated_at: new Date(user.updated_at),
-        email_verified_at: user.email_verified_at
-          ? new Date(user.email_verified_at)
+        ...data,
+        created_at: new Date(data.created_at),
+        updated_at: new Date(data.updated_at),
+        email_verified_at: data.email_verified_at
+          ? new Date(data.email_verified_at)
           : null,
-        two_factor_confirmed_at: user.two_factor_confirmed_at
-          ? new Date(user.two_factor_confirmed_at)
+        two_factor_confirmed_at: data.two_factor_confirmed_at
+          ? new Date(data.two_factor_confirmed_at)
           : null,
       }
     } catch (error) {
@@ -41,7 +41,6 @@ export const useAuth = () => {
   }
 
   async function login(payload: LoginPayload) {
-    await csrfCookie()
     await axios.post('/login', payload)
     useRouter().push('/me')
   }
@@ -54,13 +53,8 @@ export const useAuth = () => {
   }
 
   async function register(payload: RegisterPayload) {
-    try {
-      await csrfCookie()
-      await axios.post('/register', payload)
-      useRouter().push('/me')
-    } catch (error) {
-      console.error(error)
-    }
+    await axios.post('/register', payload)
+    useRouter().push('/me')
   }
 
   async function isAuthenticated(): Promise<boolean> {
@@ -70,6 +64,7 @@ export const useAuth = () => {
   }
 
   return {
+    csrfCookie,
     login,
     logout,
     register,
