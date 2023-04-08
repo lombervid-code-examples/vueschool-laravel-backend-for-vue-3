@@ -1,45 +1,50 @@
 <script setup lang="ts">
+import { RegisterPayload } from '@/types'
+import { FormKitNode } from '@formkit/core'
+
 definePageMeta({
   middleware: ['guest'],
   layout: 'centered',
 })
 
-const { register } = useAuth()
+const { register, csrfCookie } = useAuth()
 
-const form = reactive({
-  name: '',
-  email: '',
-  password: '',
-  password_confirmation: '',
-})
+csrfCookie()
+
+async function handleRegister(payload: RegisterPayload, node?: FormKitNode) {
+  try {
+    await register(payload)
+  } catch (error) {
+    handleInvalidForm(error, node)
+  }
+}
 </script>
 
 <template>
   <div class="register">
     <h1>Register</h1>
-    <form @submit.prevent="register(form)">
-      <label>
-        <div>Name</div>
-        <input type="text" v-model="form.name" />
-      </label>
-
-      <label>
-        <div>Email</div>
-        <input type="email" v-model="form.email" />
-      </label>
-
-      <label>
-        <div>Password</div>
-        <input type="password" v-model="form.password" />
-      </label>
-
-      <label>
-        <div>Confirm Password</div>
-        <input type="password" v-model="form.password_confirmation" />
-      </label>
-
-      <button class="btn">Register</button>
-    </form>
+    <FormKit type="form" submit-label="Register" @submit="handleRegister">
+      <FormKit type="text" name="name" label="Name" validation="required" />
+      <FormKit
+        type="email"
+        name="email"
+        label="Email"
+        validation="required|email"
+      />
+      <FormKit
+        type="password"
+        name="password"
+        label="Password"
+        validation="required"
+      />
+      <FormKit
+        type="password"
+        name="password_confirmation"
+        label="Confirm Password"
+        validation="required|confirm:password"
+        validation-label="Password confirmation"
+      />
+    </FormKit>
 
     <p>
       Already have an account?

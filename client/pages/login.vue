@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { AxiosError } from 'axios'
+import { LoginPayload } from '@/types'
+import { FormKitNode } from '@formkit/core'
 
 definePageMeta({
   middleware: ['guest'],
@@ -8,26 +9,13 @@ definePageMeta({
 
 const { login, csrfCookie } = useAuth()
 
-const form = reactive({
-  email: '',
-  password: '',
-})
-
-const errors = reactive({
-  email: [],
-  password: [],
-})
-
 csrfCookie()
 
-async function handleLogin() {
+async function handleLogin(credentials: LoginPayload, node?: FormKitNode) {
   try {
-    await login(form)
+    await login(credentials)
   } catch (error) {
-    if (error instanceof AxiosError && error.response?.status === 422) {
-      errors.email = error.response.data.errors.email || []
-      errors.password = error.response.data.errors.password || []
-    }
+    handleInvalidForm(error, node)
   }
 }
 </script>
@@ -35,24 +23,20 @@ async function handleLogin() {
 <template>
   <div class="login">
     <h1>Login</h1>
-    <form @submit.prevent="handleLogin()">
-      <label>
-        <div>Email</div>
-        <input type="text" v-model="form.email" />
-        <div v-for="error in errors.email" class="text-red-600 text-xs pt-1">
-          * {{ error }}
-        </div>
-      </label>
-
-      <label>
-        <div>Password</div>
-        <input type="password" v-model="form.password" />
-        <div v-for="error in errors.password" class="text-red-600 text-xs pt-1">
-          * {{ error }}
-        </div>
-      </label>
-      <button class="btn">Login</button>
-    </form>
+    <FormKit type="form" submit-label="Login" @submit="handleLogin">
+      <FormKit
+        type="email"
+        name="email"
+        label="Email"
+        validation="required|email"
+      />
+      <FormKit
+        type="password"
+        name="password"
+        label="Password"
+        validation="required"
+      />
+    </FormKit>
 
     <p>
       Don't have an account?
