@@ -17,7 +17,7 @@
     "@formkit/nuxt": "^0.16.2",
     "@formkit/themes": "^0.16.2",
     "axios": "^1.3.4",
-    "laravel-vue-pagination": "^4.0.0",
+    "laravel-vue-pagination": "^4.1.0",
     "nanoid": "^4.0.1",
     "query-string": "^8.1.0"
   }
