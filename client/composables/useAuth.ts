@@ -33,13 +33,6 @@ export const useAuth = () => {
     }
   }
 
-  async function csrfCookie() {
-    const config = useRuntimeConfig()
-    await axios.get('/sanctum/csrf-cookie', {
-      baseURL: config.public.appURL,
-    })
-  }
-
   async function login(payload: LoginPayload) {
     await axios.post('/login', payload)
     useRouter().push('/me')
@@ -64,7 +57,6 @@ export const useAuth = () => {
   }
 
   return {
-    csrfCookie,
     login,
     logout,
     register,

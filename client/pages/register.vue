@@ -7,7 +7,7 @@ definePageMeta({
   layout: 'centered',
 })
 
-const { register, csrfCookie } = useAuth()
+const { register } = useAuth()
 
 csrfCookie()
 
