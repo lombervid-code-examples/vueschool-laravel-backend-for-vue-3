@@ -18,7 +18,7 @@ class StoreLinkRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'short_link' => Str::slug($this->short_link),
+            'short_link' => Str::remove(' ', $this->short_link),
         ]);
     }
 

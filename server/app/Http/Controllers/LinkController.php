@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreLinkRequest;
 use App\Http\Requests\UpdateLinkRequest;
 use App\Models\Link;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class LinkController extends Controller
 {
@@ -15,7 +13,7 @@ class LinkController extends Controller
      */
     public function index()
     {
-        $links = Auth::user()->links()->paginate(5);
+        $links = request()->user()->links()->paginate(5);
 
         return response()->json($links);
     }
@@ -25,7 +23,7 @@ class LinkController extends Controller
      */
     public function store(StoreLinkRequest $request)
     {
-        $link = Link::create($request->validated());
+        $link = $request->user()->links()->create($request->validated());
 
         return response()->json($link, 201);
     }

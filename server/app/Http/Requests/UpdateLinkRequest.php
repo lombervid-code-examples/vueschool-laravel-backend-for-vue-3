@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateLinkRequest extends FormRequest
@@ -14,13 +13,13 @@ class UpdateLinkRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user->id === $this->link->user_id;
     }
 
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'short_link' => Str::slug($this->short_link),
+            'short_link' => Str::remove(' ', $this->short_link),
         ]);
     }
 
@@ -36,7 +35,7 @@ class UpdateLinkRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('links')->ignore(Auth::user()->id),
+                Rule::unique('links')->ignore($this->link->id),
             ],
             'full_link' => ['required', 'url', 'max:255'],
         ];
