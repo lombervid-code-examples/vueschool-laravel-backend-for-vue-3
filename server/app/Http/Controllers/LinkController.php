@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Requests\StoreLinkRequest;
 use App\Http\Requests\UpdateLinkRequest;
 use App\Models\Link;
@@ -13,7 +14,10 @@ class LinkController extends Controller
      */
     public function index()
     {
-        $links = request()->user()->links()->paginate(5);
+        $links = QueryBuilder::for(request()->user()->links())
+            ->allowedFilters(['full_link', 'short_link'])
+            ->allowedSorts(['full_link', 'short_link', 'views', 'id'])
+            ->paginate(request('per_page', 5));
 
         return response()->json($links);
     }
