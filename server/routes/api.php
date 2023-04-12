@@ -20,7 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::resource('links', LinkController::class)->except([
-        'create', 'edit'
-    ]);
+    Route::apiResource('links', LinkController::class);
 });
